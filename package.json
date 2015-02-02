@@ -1,0 +1,30 @@
+{
+  "author": "Max Nachlinger <max@somewhere.com>",
+  "name": "pgsql-write-builders",
+  "description": "Generates INSERT and UPDATE SQL statements for Postgres from JS objects and arrays",
+  "repository": {
+    "url": "https://github.com/maxnachlinger/pgsql-write-builders.git"
+  },
+  "keywords": [
+	"postgres",
+    "sql"
+  ],
+  "version": "0.0.1",
+  "bugs": {
+    "url": "https://github.com/maxnachlinger/pgsql-write-builders/issues"
+  },
+  "licenses": {
+    "type": "MIT"
+  },
+  "scripts": {
+    "test": "tape tests/*.js"
+  },
+  "main": "index.js",
+  "engines": {
+    "node": "*"
+  },
+  "devDependencies": {
+    "lodash": "^3.0.1",
+    "tape": "^3.5.0"
+  }
+}
