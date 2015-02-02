@@ -2,7 +2,7 @@
 var test = require('tape');
 var update = require('../lib/update');
 
-test('Constructs a simple update using $where', function (t) {
+test('Constructs a simple update using where', function (t) {
 	var item = {name: 'Test', color: 'Blue'};
 	var expectedSQL = 'UPDATE test SET name = $1, color = $2 WHERE id = 1';
 	var expectedValues = ['Test', 'Blue'];
