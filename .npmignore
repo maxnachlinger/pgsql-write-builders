@@ -3,4 +3,5 @@
 *.iml
 *.log
 node_modules
+examples
 *.yml
