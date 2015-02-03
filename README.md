@@ -16,32 +16,62 @@ var pg = require('pg');
 var writeSql = require('pgsql-write-builders');
 var someConnectionString = "postgres://someuser:@localhost/test";
 
-// INSERT example
-pg.connect(someConnectionString, function (err, client, done) {
-	if (err) return console.error(err);
+function insertExample(cb) {
+    pg.connect(someConnectionString, function (err, client, done) {
+        if (err) return cb(err);
 
-	var thingsToInsert = [
-		{name: 'Thing 1', color: 'Red'},
-		{name: 'Thing 2', color: 'Blue'}
-	];
+        var thingsToInsert = [
+            {name: 'Thing 1', color: 'Red'},
+            {name: 'Thing 2', color: 'Blue'}
+        ];
 
-	writeSql.insert({
-		tableName: 'test',
-		sequenceColumnName: 'id', // adds a RETURNING clause to return new sequence values
-		items: thingsToInsert
-	}, function (err, insert) {
-		if (err) {
-			done();
-			return console.error(err);
-		}
+        writeSql.insert({
+            tableName: 'test',
+            sequenceColumnName: 'id', // adds a RETURNING clause to return new sequence values
+            items: thingsToInsert
+        }, function (err, insert) {
+            if (err) {
+                done();
+                return cb(err);
+            }
 
-		client.query(insert.sql, insert.values, function (err, result) {
-			done();
-			if(err) return console.error(err);
+            /*
+            insert.sql: INSERT INTO test (name, color) VALUES ($1, $2), ($3, $4) RETURNING id;
+            insert.values: ['Thing 1', 'Red', 'Thing 2', 'Blue']
+            */
+            client.query(insert.sql, insert.values, function (err, result) {
+                done();
+                cb(err, result);
+            });
+        });
+    });
+}
 
-			cb(err, result);
-		});
-	});
-});
+function updateExample(cb) {
+    pg.connect(someConnectionString, function (err, client, done) {
+        if (err) return cb(err);
 
+        var thingToUpdate = {id: 1, name: 'Thing 1 (edited)', color: 'Green'};
+
+        writeSql.update({
+            tableName: 'test',
+            keyColumnName: 'id',
+            item: thingToUpdate
+        }, function (err, update) {
+            if (err) {
+                done();
+                return cb(err);
+            }
+
+            /*
+            update.sql: UPDATE test SET name = $1, color = $2 WHERE id = $3;
+            update.values: ['Thing 1 (edited)', 'Green', 1]
+            */
+            client.query(update.sql, update.values, function (err, result) {
+                done();
+                cb(err, result);
+            });
+        });
+    });
+}
 ```
