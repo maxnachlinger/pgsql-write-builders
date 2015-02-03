@@ -36,8 +36,10 @@ function insertExample(cb) {
             }
 
             /*
-            insert.sql: INSERT INTO test (name, color) VALUES ($1, $2), ($3, $4) RETURNING id;
-            insert.values: ['Thing 1', 'Red', 'Thing 2', 'Blue']
+            insert: {
+                sql: INSERT INTO test (name, color) VALUES ($1, $2), ($3, $4) RETURNING id;
+                values: ['Thing 1', 'Red', 'Thing 2', 'Blue']
+            }
             */
             client.query(insert.sql, insert.values, function (err, result) {
                 done();
@@ -64,8 +66,10 @@ function updateExample(cb) {
             }
 
             /*
-            update.sql: UPDATE test SET name = $1, color = $2 WHERE id = $3;
-            update.values: ['Thing 1 (edited)', 'Green', 1]
+            update: {
+                sql: UPDATE test SET name = $1, color = $2 WHERE id = $3;
+                values: ['Thing 1 (edited)', 'Green', 1]
+            }
             */
             client.query(update.sql, update.values, function (err, result) {
                 done();
@@ -75,3 +79,5 @@ function updateExample(cb) {
     });
 }
 ```
+### Why:
+Writing UPDATE and INSERT statements isn't terribly fun, this helps a little with that :)
