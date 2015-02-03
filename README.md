@@ -16,19 +16,19 @@ var pg = require('pg');
 var writeSql = require('pgsql-write-builders');
 var someConnectionString = "postgres://someuser:@localhost/test";
 
-// INSERT
+// INSERT example
 pg.connect(someConnectionString, function (err, client, done) {
 	if (err) return console.error(err);
 
-	var things = [
+	var thingsToInsert = [
 		{name: 'Thing 1', color: 'Red'},
 		{name: 'Thing 2', color: 'Blue'}
 	];
 
 	writeSql.insert({
 		tableName: 'test',
-		sequenceColumnName: 'id',
-		items: things
+		sequenceColumnName: 'id', // adds a RETURNING clause to return new sequence values
+		items: thingsToInsert
 	}, function (err, insert) {
 		if (err) {
 			done();
