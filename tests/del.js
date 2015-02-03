@@ -1,16 +1,14 @@
 "use strict";
 var test = require('tape');
-var update = require('../lib/update');
+var del = require('../lib/del');
 
-test('Constructs a simple update using where', function (t) {
-	var item = {name: 'Test', color: 'Blue'};
-	var expectedSQL = 'UPDATE test SET name = $1, color = $2 WHERE id = 1;';
-	var expectedValues = ['Test', 'Blue'];
-	
-	update({
-		item: item,
+test('Constructs a simple delete using where', function (t) {
+	var expectedSQL = 'DELETE FROM test WHERE id = 1;';
+	var expectedValues = [];
+
+	del({
 		where: 'id = 1',
-		tableName: 'test'
+		table: 'test'
 	}, function(err, res) {
 		t.notOk(err, "No error should have been returned, received: " + (err && err.stack));
 		t.equal(res.sql, expectedSQL, "Returns the expected SQL: " + res.sql);
@@ -19,15 +17,14 @@ test('Constructs a simple update using where', function (t) {
 	});
 });
 
-test('Constructs a simple update using keyColumnName', function (t) {
-	var item = {name: 'Test', color: 'Blue', id: 1};
-	var expectedSQL = 'UPDATE test SET name = $1, color = $2 WHERE id = $3;';
-	var expectedValues = ['Test', 'Blue', 1];
+test('Constructs a simple delete using keyColumn', function (t) {
+	var expectedSQL = 'DELETE FROM test WHERE id = $1;';
+	var expectedValues = [1];
 
-	update({
-		item: item,
-		tableName: 'test',
-		keyColumnName: 'id'
+	del({
+		table: 'test',
+		keyColumn: 'id',
+		keyValue: 1
 	}, function(err, res) {
 		t.notOk(err, "No error should have been returned, received: " + (err && err.stack));
 		t.equal(res.sql, expectedSQL, "Returns the expected SQL: " + res.sql);

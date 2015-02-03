@@ -25,23 +25,23 @@ function insertExample(cb) {
             {name: 'Thing 2', color: 'Blue'}
         ];
 
-        writeSql.insert({
-            tableName: 'test',
-            returnInsertedRows: true, // adds a RETURNING * clause to return inserted rows
+        writeSql.ins({
+            table: 'test',
+            returningAll: true, // adds a RETURNING * clause to return inserted rows
             items: thingsToInsert
-        }, function (err, insert) {
+        }, function (err, ins) {
             if (err) {
                 done();
                 return cb(err);
             }
 
             /*
-            insert: {
+            ins: {
                 sql: INSERT INTO test (name, color) VALUES ($1, $2), ($3, $4) RETURNING id;
                 values: ['Thing 1', 'Red', 'Thing 2', 'Blue']
             }
             */
-            client.query(insert.sql, insert.values, function (err, result) {
+            client.query(ins.sql, ins.values, function (err, result) {
                 done();
                 cb(err, result);
             });
@@ -53,25 +53,53 @@ function updateExample(cb) {
     pg.connect(someConnectionString, function (err, client, done) {
         if (err) return cb(err);
 
-        var thingToUpdate = {id: 1, name: 'Thing 1 (edited)', color: 'Green'};
+        var thingToUpdate = {id: 100, name: 'Thing 1 (edited)', color: 'Green'};
 
-        writeSql.update({
-            tableName: 'test',
-            keyColumnName: 'id',
+        writeSql.upd({
+            table: 'test',
+            keyColumn: 'id',
             item: thingToUpdate
-        }, function (err, update) {
+        }, function (err, upd) {
             if (err) {
                 done();
                 return cb(err);
             }
 
             /*
-            update: {
+            upd: {
                 sql: UPDATE test SET name = $1, color = $2 WHERE id = $3;
-                values: ['Thing 1 (edited)', 'Green', 1]
+                values: ['Thing 1 (edited)', 'Green', 100]
             }
             */
-            client.query(update.sql, update.values, function (err, result) {
+            client.query(upd.sql, upd.values, function (err, result) {
+                done();
+                cb(err, result);
+            });
+        });
+    });
+}
+
+function deleteExample(cb) {
+    pg.connect(someConnectionString, function (err, client, done) {
+        if (err) return cb(err);
+
+        writeSql.del({
+            table: 'test',
+            keyColumn: 'id',
+            keyValue: 100
+        }, function (err, del) {
+            if (err) {
+                done();
+                return cb(err);
+            }
+
+            /*
+            del: {
+                sql: DELETE FROM test WHERE id = $1;
+                values: [100]
+            }
+            */
+            client.query(del.sql, del.values, function (err, result) {
                 done();
                 cb(err, result);
             });
@@ -80,4 +108,4 @@ function updateExample(cb) {
 }
 ```
 ### Why:
-Writing UPDATE and INSERT statements isn't terribly fun, this helps a little with that :)
+Writing UPDATE, INSERT, and DELETE SQL statements isn't terribly fun, this helps a little with that :)

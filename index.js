@@ -1,4 +1,5 @@
 module.exports = {
-	insert: require('./lib/insert'),
-	update: require('./lib/update')
+	ins: require('./lib/ins'),
+	upd: require('./lib/upd'),
+	del: require('./lib/del')
 };
