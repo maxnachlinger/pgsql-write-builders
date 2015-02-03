@@ -25,11 +25,11 @@ test('Constructs a simple INSERT with a RETURNING clause', function (t) {
 		{name: 'Test 1', color: 'Blue'}
 	];
 	var expectedValues = ['Test 1', 'Blue'];
-	var expectedSQL = 'INSERT INTO test (name, color) VALUES ($1, $2) RETURNING id;';
+	var expectedSQL = 'INSERT INTO test (name, color) VALUES ($1, $2) RETURNING *;';
 
 	insert({
 		items: items,
-		sequenceColumnName: 'id',
+		returnInsertedRows: true,
 		tableName: 'test'
 	}, function (err, res) {
 		t.notOk(err, "No error should have been returned, received: " + (err && err.stack));
@@ -64,11 +64,11 @@ test('Constructs a simple bulk INSERT with a RETURNING clause', function (t) {
 		{name: 'Test 2', color: 'Red'}
 	];
 	var expectedValues = ['Test 1', 'Blue', 'Test 2', 'Red'];
-	var expectedSQL = 'INSERT INTO test (name, color) VALUES ($1, $2), ($3, $4) RETURNING id;';
+	var expectedSQL = 'INSERT INTO test (name, color) VALUES ($1, $2), ($3, $4) RETURNING *;';
 
 	insert({
 		items: items,
-		sequenceColumnName: 'id',
+		returnInsertedRows: true,
 		tableName: 'test'
 	}, function (err, res) {
 		t.notOk(err, "No error should have been returned, received: " + (err && err.stack));

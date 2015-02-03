@@ -27,7 +27,7 @@ function insertExample(cb) {
 
         writeSql.insert({
             tableName: 'test',
-            sequenceColumnName: 'id', // adds a RETURNING clause to return new sequence values
+            returnInsertedRows: true, // adds a RETURNING * clause to return inserted rows
             items: thingsToInsert
         }, function (err, insert) {
             if (err) {
