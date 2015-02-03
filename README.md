@@ -12,5 +12,36 @@ npm i pgsql-write-builders
 ```
 ### Usage:
 ```javascript
-// Coming soon
+var pg = require('pg');
+var writeSql = require('pgsql-write-builders');
+var someConnectionString = "postgres://someuser:@localhost/test";
+
+// INSERT
+pg.connect(someConnectionString, function (err, client, done) {
+	if (err) return console.error(err);
+
+	var things = [
+		{name: 'Thing 1', color: 'Red'},
+		{name: 'Thing 2', color: 'Blue'}
+	];
+
+	writeSql.insert({
+		tableName: 'test',
+		sequenceColumnName: 'id',
+		items: things
+	}, function (err, insert) {
+		if (err) {
+			done();
+			return console.error(err);
+		}
+
+		client.query(insert.sql, insert.values, function (err, result) {
+			done();
+			if(err) return console.error(err);
+
+			cb(err, result);
+		});
+	});
+});
+
 ```
