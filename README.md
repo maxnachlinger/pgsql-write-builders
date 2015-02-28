@@ -78,34 +78,6 @@ function updateExample(cb) {
         });
     });
 }
-
-function deleteExample(cb) {
-    pg.connect(someConnectionString, function (err, client, done) {
-        if (err) return cb(err);
-
-        writeSql.del({
-            table: 'test',
-            keyColumn: 'id',
-            keyValue: 100
-        }, function (err, del) {
-            if (err) {
-                done();
-                return cb(err);
-            }
-
-            /*
-            del: {
-                sql: DELETE FROM test WHERE id = $1;
-                values: [100]
-            }
-            */
-            client.query(del.sql, del.values, function (err, result) {
-                done();
-                cb(err, result);
-            });
-        });
-    });
-}
 ```
 ### Why:
-Writing UPDATE, INSERT, and DELETE SQL statements isn't terribly fun, this helps a little with that :)
+Writing UPDATE and INSERT SQL statements isn't terribly fun, this helps a little with that :)
