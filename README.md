@@ -25,7 +25,7 @@ const writeSql = require('pgsql-write-builders')
 const thingsToInsert = [
   { name: 'Thing 1', color: 'Red' },
   { name: 'Thing 2', color: 'Blue' }
-];
+]
 
 writeSql.insert({
   table: 'test',
@@ -39,9 +39,9 @@ writeSql.insert({
    values: ['Thing 1', 'Red', 'Thing 2', 'Blue']
    }
    */
-});
+})
 
-const thingToUpdate = { id: 100, name: 'Thing 1 (edited)', color: 'Green' };
+const thingToUpdate = { id: 100, name: 'Thing 1 (edited)', color: 'Green' }
 
 writeSql.update({
   table: 'test',
@@ -55,7 +55,7 @@ writeSql.update({
    values: ['Thing 1 (edited)', 'Green', 100]
    }
    */
-});
+})
 
 // Promises are also supported
 
@@ -71,7 +71,7 @@ writeSql.insert({
      values: ['Thing 1', 'Red', 'Thing 2', 'Blue']
      }
      */
-  });
+  })
 
 writeSql.update({
     table: 'test',
@@ -85,7 +85,7 @@ writeSql.update({
      values: ['Thing 1 (edited)', 'Green', 100]
      }
      */
-  });
+  })
 ```
 
 ### Why:
