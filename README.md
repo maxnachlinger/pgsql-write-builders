@@ -19,72 +19,74 @@ npm i pgsql-write-builders
 ```
 ### Usage:
 ```javascript
-const pg = require('pg');
-const writeSql = require('pgsql-write-builders');
-const someConnectionString = "postgres://someuser:@localhost/test";
+'use strict'
+const writeSql = require('pgsql-write-builders')
 
-function insertExample(cb) {
-    pg.connect(someConnectionString, function (err, client, done) {
-        if (err) return cb(err);
+const thingsToInsert = [
+  { name: 'Thing 1', color: 'Red' },
+  { name: 'Thing 2', color: 'Blue' }
+];
 
-        var thingsToInsert = [
-            {name: 'Thing 1', color: 'Red'},
-            {name: 'Thing 2', color: 'Blue'}
-        ];
+writeSql.insert({
+  table: 'test',
+  returningAll: true, // adds a RETURNING * clause to return inserted rows
+  items: thingsToInsert
+}, (err, result) => {
+  if (err) { throw err }
+  /*
+   result: {
+   sql: INSERT INTO test (name, color) VALUES ($1, $2), ($3, $4) RETURNING id;
+   values: ['Thing 1', 'Red', 'Thing 2', 'Blue']
+   }
+   */
+});
 
-        writeSql.ins({
-            table: 'test',
-            returningAll: true, // adds a RETURNING * clause to return inserted rows
-            items: thingsToInsert
-        }, function (err, ins) {
-            if (err) {
-                done();
-                return cb(err);
-            }
+const thingToUpdate = { id: 100, name: 'Thing 1 (edited)', color: 'Green' };
 
-            /*
-            ins: {
-                sql: INSERT INTO test (name, color) VALUES ($1, $2), ($3, $4) RETURNING id;
-                values: ['Thing 1', 'Red', 'Thing 2', 'Blue']
-            }
-            */
-            client.query(ins.sql, ins.values, function (err, result) {
-                done();
-                cb(err, result);
-            });
-        });
-    });
-}
+writeSql.update({
+  table: 'test',
+  keyColumn: 'id',
+  item: thingToUpdate
+}, function (err, result) {
+  if (err) { throw err }
+  /*
+   result: {
+   sql: UPDATE test SET name = $1, color = $2 WHERE id = $3;
+   values: ['Thing 1 (edited)', 'Green', 100]
+   }
+   */
+});
 
-function updateExample(cb) {
-    pg.connect(someConnectionString, function (err, client, done) {
-        if (err) return cb(err);
+// Promises are also supported
 
-        var thingToUpdate = {id: 100, name: 'Thing 1 (edited)', color: 'Green'};
+writeSql.insert({
+    table: 'test',
+    returningAll: true, // adds a RETURNING * clause to return inserted rows
+    items: thingsToInsert
+  })
+  .then(result => {
+    /*
+     result: {
+     sql: INSERT INTO test (name, color) VALUES ($1, $2), ($3, $4) RETURNING id;
+     values: ['Thing 1', 'Red', 'Thing 2', 'Blue']
+     }
+     */
+  });
 
-        writeSql.upd({
-            table: 'test',
-            keyColumn: 'id',
-            item: thingToUpdate
-        }, function (err, upd) {
-            if (err) {
-                done();
-                return cb(err);
-            }
-
-            /*
-            upd: {
-                sql: UPDATE test SET name = $1, color = $2 WHERE id = $3;
-                values: ['Thing 1 (edited)', 'Green', 100]
-            }
-            */
-            client.query(upd.sql, upd.values, function (err, result) {
-                done();
-                cb(err, result);
-            });
-        });
-    });
-}
+writeSql.update({
+    table: 'test',
+    keyColumn: 'id',
+    item: thingToUpdate
+  })
+  .then(result => {
+    /*
+     result: {
+     sql: UPDATE test SET name = $1, color = $2 WHERE id = $3;
+     values: ['Thing 1 (edited)', 'Green', 100]
+     }
+     */
+  });
 ```
+
 ### Why:
 Writing UPDATE and INSERT SQL statements isn't terribly fun, this helps a little with that :)
