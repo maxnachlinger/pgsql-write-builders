@@ -2,9 +2,16 @@
 
 Generates INSERT and UPDATE SQL statements for Postgres from JS objects and arrays
 
-[![NPM](https://nodei.co/npm/pgsql-write-builders.png)](https://nodei.co/npm/pgsql-write-builders/)
+[![travis][travis-image]][travis-url]
+[![npm][npm-image]][npm-url]
+[![standard][standard-image]][standard-url]
 
-[![Build Status](https://travis-ci.org/maxnachlinger/pgsql-write-builders.svg?branch=master)](https://travis-ci.org/maxnachlinger/pgsql-write-builders)
+[travis-image]: https://travis-ci.org/maxnachlinger/pgsql-write-builders.svg?branch=master
+[travis-url]: https://travis-ci.org/maxnachlinger/pgsql-write-builders
+[npm-image]: https://img.shields.io/npm/v/pgsql-write-builders.svg?style=flat
+[npm-url]: https://npmjs.org/package/pgsql-write-builders
+[standard-image]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
+[standard-url]: http://standardjs.com/
 
 ### Installation:
 ```
@@ -12,9 +19,9 @@ npm i pgsql-write-builders
 ```
 ### Usage:
 ```javascript
-var pg = require('pg');
-var writeSql = require('pgsql-write-builders');
-var someConnectionString = "postgres://someuser:@localhost/test";
+const pg = require('pg');
+const writeSql = require('pgsql-write-builders');
+const someConnectionString = "postgres://someuser:@localhost/test";
 
 function insertExample(cb) {
     pg.connect(someConnectionString, function (err, client, done) {

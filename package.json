@@ -3,29 +3,29 @@
   "name": "pgsql-write-builders",
   "description": "Generates INSERT and UPDATE SQL statements for Postgres from JS objects and arrays",
   "keywords": [
-	"postgres",
-	"sql"
+    "postgres",
+    "sql"
   ],
-  "version": "0.0.5",
+  "version": "1.0.0",
   "scripts": {
-	"test": "tape tests/*.js"
+    "test": "./node_modules/.bin/standard && ./node_modules/.bin/tape tests/*.js"
   },
   "main": "index.js",
   "devDependencies": {
-	"lodash": "^3.0.1",
-	"tape": "^3.5.0"
+    "standard": "^6.0.8",
+    "tape": "^4.5.1"
   },
   "directories": {
-	"test": "tests"
+    "test": "tests"
   },
   "dependencies": {},
   "repository": {
-	"type": "git",
-	"url": "https://github.com/maxnachlinger/pgsql-write-builders.git"
+    "type": "git",
+    "url": "https://github.com/maxnachlinger/pgsql-write-builders.git"
   },
   "license": "ISC",
   "bugs": {
-	"url": "https://github.com/maxnachlinger/pgsql-write-builders/issues"
+    "url": "https://github.com/maxnachlinger/pgsql-write-builders/issues"
   },
   "homepage": "https://github.com/maxnachlinger/pgsql-write-builders"
 }
